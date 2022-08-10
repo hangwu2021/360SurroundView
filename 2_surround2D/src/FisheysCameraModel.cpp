@@ -55,13 +55,9 @@ void FisheyeCameraModel::set_scale_and_shift(cv::Vec2f scale_xy, cv::Vec2f shift
     update_undistort_maps();
 }
 
-void FisheyeCameraModel::undistort(cv::Mat image)
+void FisheyeCameraModel::undistort(cv::Mat &image, cv::Mat &result)
 {
-    cv::Mat result;
-    
-    cv::remap(image, result, project_matrix, );
-    
-    return result;
+    cv::remap(image, result, map1, map2, cv::INTER_LINEAR);
 }
 
 
