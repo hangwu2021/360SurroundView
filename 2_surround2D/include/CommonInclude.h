@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <fstream>
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>

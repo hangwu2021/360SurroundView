@@ -12,7 +12,7 @@ public:
     void load_camera_params();
     void update_undistort_maps();
     void set_scale_and_shift(cv::Vec2f scale_xy=cv::Vec2f(1.0, 1.0), cv::Vec2f shift_xy=cv::Vec2f(0, 0));
-    void undistort(cv::Mat image);
+    void undistort(cv::Mat &image, cv::Mat &result);
     
     void save_data();
     
