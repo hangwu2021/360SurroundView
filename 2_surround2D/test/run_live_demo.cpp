@@ -14,63 +14,118 @@ int main(int argc, char *argv[])
     camera0.calc_project_matrix();
     camera0.save_calibrated_yaml();
     */
-    // Test Instance FisheyeCameraModel
+    // camera front
     FisheyeCameraModel camera_front("front");
-    cv::Mat image_front, undistorted_result_front, perspective_result_front;
-    
-    image_front = cv::imread("data/images/fisheye/front/front.png");
     camera_front.load_camera_params();
     camera_front.update_undistort_maps();    // Must mapx and mapy for remap function
-    camera_front.undistort_remap(image_front, undistorted_result_front);
-    camera_front.project_warp_perspective(undistorted_result_front, perspective_result_front);
+    
+    cv::VideoCapture video_front("data/videos/front0810_1280.avi");
+    if (!video_front.isOpened())
+    {
+        std::cerr << "video front is opened failed!" << std::endl;
+        return -1;
+    }
     
     // camera back
     FisheyeCameraModel camera_back("back");
-    cv::Mat image_back, undistorted_result_back, perspective_result_back;
-    
-    image_back = cv::imread("data/images/fisheye/back/back.png");
     camera_back.load_camera_params();
     camera_back.update_undistort_maps();
-    camera_back.undistort_remap(image_back, undistorted_result_back);
-    camera_back.project_warp_perspective(undistorted_result_back, perspective_result_back);
+    
+    cv::VideoCapture video_back("data/videos/back0810_1280.avi");
+    if (!video_back.isOpened())
+    {
+        std::cerr << "video back is opened failed!" << std::endl;
+        return -1;
+    }
     
     // camera left
     FisheyeCameraModel camera_left("left");
-    cv::Mat image_left, undistorted_result_left, perspective_result_left;
-    
-    image_left = cv::imread("data/images/fisheye/left/left.png");
     camera_left.load_camera_params();
     camera_left.update_undistort_maps();
-    camera_left.undistort_remap(image_left, undistorted_result_left);
-    camera_left.project_warp_perspective(undistorted_result_left, perspective_result_left);
+    
+    cv::VideoCapture video_left("data/videos/left0810_1280.avi");
+    if (!video_left.isOpened())
+    {
+        std::cerr << "video left is opened failed!" << std::endl;
+        return -1;
+    }
     
     // camera right
     FisheyeCameraModel camera_right("right");
-    cv::Mat image_right, undistorted_result_right, perspective_result_right;
-    
-    image_right = cv::imread("data/images/fisheye/right/right.png");
     camera_right.load_camera_params();
     camera_right.update_undistort_maps();
-    camera_right.undistort_remap(image_right, undistorted_result_right);
-    camera_right.project_warp_perspective(undistorted_result_right, perspective_result_right);
     
+    cv::VideoCapture video_right("data/videos/right0810_1280.avi");
+    if (!video_right.isOpened())
+    {
+        std::cerr << "video right is opened failed!" << std::endl;
+        return -1;
+    }
+    
+    // car model 
     cv::Mat car_model;
     car_model = cv::imread("data/images/fisheye/car.png");
-    
-    // Generate Bird View Final Image
     BirdView bv(car_model);
-    bv.add_4frames(perspective_result_front, perspective_result_back, perspective_result_left, perspective_result_right);
-    
     UtilsView uv;
-    /*cv::imshow("balance", uv.make_white_blance(bv.FM()));
-    cv::Mat result = bv.stitch_all_parts();
-    cv::imshow("fusion_result", result);
-    cv::waitKey(0);*/
     
-    cv::Mat stitced_img = bv.stitch_all_parts();
-    uv.make_luminace_balance_hsv(stitced_img);
+    // stitch 4 frames
+    ParamSettings params;
+    cv::VideoWriter stitched_output("data/videos/stitched_output.avi", CV_FOURCC('M', 'J', 'P', 'G'), 25.0, cv::Size(params.total_w, params.total_h));
     
-    cv::imwrite("data/images/fisheye/stitch_result.png", stitced_img);
+    cv::Mat frame_front, undistorted_result_front, perspective_result_front;
+    cv::Mat frame_back, undistorted_result_back, perspective_result_back;
+    cv::Mat frame_left, undistorted_result_left, perspective_result_left;
+    cv::Mat frame_right, undistorted_result_right, perspective_result_right;
+    cv::Mat frame_stitched;
+    
+    std::cout << "number of video: " << video_front.get(CV_CAP_PROP_FRAME_COUNT) << ", " << video_front.get(CV_CAP_PROP_FRAME_WIDTH) << ", " << video_front.get(CV_CAP_PROP_FRAME_HEIGHT) << std::endl;
+    std::cout << "number of video: " << video_back.get(CV_CAP_PROP_FRAME_COUNT) << ", " << video_back.get(CV_CAP_PROP_FRAME_WIDTH) << ", " << video_back.get(CV_CAP_PROP_FRAME_HEIGHT) << std::endl;
+    std::cout << "number of video: " << video_left.get(CV_CAP_PROP_FRAME_COUNT) << ", " << video_left.get(CV_CAP_PROP_FRAME_WIDTH) << ", " << video_left.get(CV_CAP_PROP_FRAME_HEIGHT) << std::endl;
+    std::cout << "number of video: " << video_right.get(CV_CAP_PROP_FRAME_COUNT) << ", " << video_right.get(CV_CAP_PROP_FRAME_WIDTH) << ", " << video_right.get(CV_CAP_PROP_FRAME_HEIGHT) << std::endl;
+    
+    bool stop = false; long cnt = 0;
+    stop = (!video_front.read(frame_front)) || (!video_back.read(frame_back)) || (!video_front.read(frame_left)) || (!video_right.read(frame_right));
+    while (!stop)
+    {
+        cv::resize(frame_front, frame_front, cv::Size(960, 640));
+        cv::resize(frame_back, frame_back, cv::Size(960, 640));
+        cv::resize(frame_left, frame_left, cv::Size(960, 640));
+        cv::resize(frame_right, frame_right, cv::Size(960, 640));
+        
+        camera_front.undistort_remap(frame_front, undistorted_result_front);
+        camera_front.project_warp_perspective(undistorted_result_front, perspective_result_front);
+        
+        camera_back.undistort_remap(frame_back, undistorted_result_back);
+        camera_back.project_warp_perspective(undistorted_result_back, perspective_result_back);
+        
+        camera_left.undistort_remap(frame_left, undistorted_result_left);
+        camera_left.project_warp_perspective(undistorted_result_left, perspective_result_left);
+        
+        camera_right.undistort_remap(frame_right, undistorted_result_right);
+        camera_right.project_warp_perspective(undistorted_result_right, perspective_result_right);
+        
+        bv.add_4frames(perspective_result_front, perspective_result_back, perspective_result_left, perspective_result_right);
+        frame_stitched = bv.stitch_all_parts();
+        
+        cv::Mat frame_whited;
+        frame_whited = uv.make_white_blance(frame_stitched);// Step5: White Balance
+        
+        uv.make_luminace_balance_yuv(frame_whited);
+        
+        cv::imshow("front", frame_whited);
+        cv::waitKey(100);
+        
+        cnt++; std::cout << "frame num = " << cnt << std::endl;
+        stop = (!video_front.read(frame_front)) || (!video_back.read(frame_back)) || (!video_front.read(frame_left)) || (!video_right.read(frame_right));
+    }
+    
+    
+    video_front.release();
+    video_back.release();
+    video_left.release();
+    video_right.release();
+    
+    //cv::imwrite("data/images/fisheye/stitch_result.png", stitced_img);
     
     return 0;
 }

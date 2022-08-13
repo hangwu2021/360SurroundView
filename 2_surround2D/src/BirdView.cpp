@@ -109,9 +109,6 @@ cv::Mat BirdView::stitch_all_parts()
     merge_part_iii.copyTo(final_image(cv::Range(params.yb, final_image.rows), cv::Range(0, params.xl)));
     merge_part_iv.copyTo(final_image(cv::Range(params.yb, final_image.rows), cv::Range(params.xr, final_image.cols)));
     
-    // Step5: White Balance
-    this->final_image = uv.make_white_blance(final_image);
-    
     return this->final_image;
 }
 
