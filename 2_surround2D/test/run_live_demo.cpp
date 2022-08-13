@@ -2,6 +2,8 @@
 #include "CalibrateCamera.h"
 #include "BirdView.h"
 
+#include "UtilsView.h"
+
 int main(int argc, char *argv[])
 {
     // Test Instance CalibrateCamera
@@ -56,13 +58,19 @@ int main(int argc, char *argv[])
     car_model = cv::imread("data/images/fisheye/car.png");
     
     // Generate Bird View Final Image
-    BirdView bv(perspective_result_front, perspective_result_back, perspective_result_left, perspective_result_right, car_model);
+    BirdView bv(car_model);
+    bv.add_4frames(perspective_result_front, perspective_result_back, perspective_result_left, perspective_result_right);
     
-    //cv::imshow("Final Image", bv.stitch_all_parts());
-    cv::imwrite("data/images/fisheye/stitch_result.png", bv.stitch_all_parts());
+    UtilsView uv;
+    /*cv::imshow("balance", uv.make_white_blance(bv.FM()));
+    cv::Mat result = bv.stitch_all_parts();
+    cv::imshow("fusion_result", result);
+    cv::waitKey(0);*/
     
-    cv::waitKey(0);
-    cv::destroyAllWindows();
+    cv::Mat stitced_img = bv.stitch_all_parts();
+    uv.make_luminace_balance(stitced_img);
+    
+    cv::imwrite("data/images/fisheye/stitch_result.png", stitced_img);
     
     return 0;
 }
