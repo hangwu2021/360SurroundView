@@ -112,8 +112,7 @@ int main(int argc, char *argv[])
         
         uv.make_luminace_balance_yuv(frame_whited);
         
-        cv::imshow("front", frame_whited);
-        cv::waitKey(100);
+        stitched_output.write(frame_whited);
         
         cnt++; std::cout << "frame num = " << cnt << std::endl;
         stop = (!video_front.read(frame_front)) || (!video_back.read(frame_back)) || (!video_front.read(frame_left)) || (!video_right.read(frame_right));
@@ -124,6 +123,7 @@ int main(int argc, char *argv[])
     video_back.release();
     video_left.release();
     video_right.release();
+    stitched_output.release();
     
     //cv::imwrite("data/images/fisheye/stitch_result.png", stitced_img);
     
