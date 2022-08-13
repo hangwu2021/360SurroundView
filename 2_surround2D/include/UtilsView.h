@@ -8,7 +8,7 @@ class UtilsView
 public:
     
     cv::Mat merge(const cv::Mat &imA, const cv::Mat &imB, const cv::Mat &G);
-    cv::Mat make_white_blance(const cv::Mat &image);
+    void make_white_blance(cv::Mat &image);
     cv::Mat convert_binary_to_bool(const cv::Mat &mask);
     cv::Mat adjust_luminance(const cv::Mat &gray, const double factor);
     

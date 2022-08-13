@@ -194,7 +194,7 @@ void UtilsView::make_luminace_balance_hsv ( cv::Mat& image )
 }
 
 
-cv::Mat UtilsView::make_white_blance(const cv::Mat& image)
+void UtilsView::make_white_blance(cv::Mat& image)
 {
     std::vector<cv::Mat> channels;
     cv::split(image, channels);
@@ -215,9 +215,6 @@ cv::Mat UtilsView::make_white_blance(const cv::Mat& image)
         balanced_channels.push_back(adjust_luminance(channels[i], factors[i]));
     }
     
-    cv::Mat balanced_image;
-    cv::merge(balanced_channels, balanced_image);
-    
-    return balanced_image;
+    cv::merge(balanced_channels, image);
 }
 

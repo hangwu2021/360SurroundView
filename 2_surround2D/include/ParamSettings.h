@@ -9,9 +9,6 @@ public:
     ParamSettings();
     
 public:
-    cv::Mat getCarImage(const std::string &carModelFileName);
-    
-public:
     std::vector<std::string> camera_names;
     
 public:

@@ -4,18 +4,18 @@ ParamSettings::ParamSettings()
 {
     camera_names = {"front", "back", "left", "right"};
     
-    shift_w = 300;
-    shift_h = 300;
+    shift_w = 240;
+    shift_h = 240;
     
-    inn_shift_w = 20;
-    inn_shift_h = 50;
+    inn_shift_w = 40;
+    inn_shift_h = 40;
     
     total_w = 600 + 2*shift_w;
-    total_h = 1000 + 2*shift_h;
+    total_h = 600 + 2*shift_h;
     
     // Four Corners of the Rectangle occupied by the Car Model
-    xl = shift_w + 180 + inn_shift_w;
-    yt = shift_h + 200 + inn_shift_h;
+    xl = shift_w + 120 + inn_shift_w;
+    yt = shift_h + 120 + inn_shift_h;
     xr = total_w - xl;
     yb = total_h - yt;
     
@@ -41,15 +41,4 @@ ParamSettings::ParamSettings()
     project_keypoints.insert(std::map<std::string, std::vector<cv::Point2f>>::value_type("right", tempPointsVec));
     
     tempPointsVec.clear();
-}
-
-cv::Mat ParamSettings::getCarImage(const std::string& carModelFileName)
-{
-    cv::Mat car_img;
-    car_img = cv::imread(carModelFileName);
-    assert(car_img.data != nullptr);
-    
-    cv::resize(car_img, car_img, cv::Size(xr-xl, yb-yt));
-    
-    return car_img;
 }

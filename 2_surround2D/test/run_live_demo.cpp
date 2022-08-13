@@ -87,11 +87,11 @@ int main(int argc, char *argv[])
     stop = (!video_front.read(frame_front)) || (!video_back.read(frame_back)) || (!video_front.read(frame_left)) || (!video_right.read(frame_right));
     while (!stop)
     {
-        cv::resize(frame_front, frame_front, cv::Size(960, 640));
+        /*cv::resize(frame_front, frame_front, cv::Size(960, 640));
         cv::resize(frame_back, frame_back, cv::Size(960, 640));
         cv::resize(frame_left, frame_left, cv::Size(960, 640));
         cv::resize(frame_right, frame_right, cv::Size(960, 640));
-        
+        */
         camera_front.undistort_remap(frame_front, undistorted_result_front);
         camera_front.project_warp_perspective(undistorted_result_front, perspective_result_front);
         
@@ -106,13 +106,13 @@ int main(int argc, char *argv[])
         
         bv.add_4frames(perspective_result_front, perspective_result_back, perspective_result_left, perspective_result_right);
         frame_stitched = bv.stitch_all_parts();
-        
+        /*
         cv::Mat frame_whited;
         frame_whited = uv.make_white_blance(frame_stitched);// Step5: White Balance
         
         uv.make_luminace_balance_yuv(frame_whited);
-        
-        stitched_output.write(frame_whited);
+        */
+        stitched_output.write(frame_stitched);
         
         cnt++; std::cout << "frame num = " << cnt << std::endl;
         stop = (!video_front.read(frame_front)) || (!video_back.read(frame_back)) || (!video_front.read(frame_left)) || (!video_right.read(frame_right));
