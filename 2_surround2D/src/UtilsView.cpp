@@ -158,7 +158,7 @@ cv::Mat UtilsView::adjust_luminance(const cv::Mat& gray, const double factor)
     return gray_factor;
 }
 
-void UtilsView::make_luminace_balance(cv::Mat& image)
+void UtilsView::make_luminace_balance_yuv(cv::Mat& image)
 {
     // step1: BGR -> YUV
     cv::Mat yuv_img;
@@ -177,6 +177,22 @@ void UtilsView::make_luminace_balance(cv::Mat& image)
     // step5: YUV -> BGR 
     cv::cvtColor(image, image, CV_YUV2BGR);
 }
+
+void UtilsView::make_luminace_balance_hsv ( cv::Mat& image )
+{
+    cv::Mat hsv_img;
+    cv::cvtColor(image, hsv_img, CV_BGR2HSV);
+    
+    std::vector<cv::Mat> hsv_channels;
+    cv::split(hsv_img, hsv_channels);
+    
+    cv::equalizeHist(hsv_channels[2], hsv_channels[2]);
+    
+    cv::merge(hsv_channels, image);
+    
+    cv::cvtColor(image, image, CV_HSV2BGR);
+}
+
 
 cv::Mat UtilsView::make_white_blance(const cv::Mat& image)
 {

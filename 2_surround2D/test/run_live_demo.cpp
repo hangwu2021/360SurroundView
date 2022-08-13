@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
     cv::waitKey(0);*/
     
     cv::Mat stitced_img = bv.stitch_all_parts();
-    uv.make_luminace_balance(stitced_img);
+    uv.make_luminace_balance_hsv(stitced_img);
     
     cv::imwrite("data/images/fisheye/stitch_result.png", stitced_img);
     

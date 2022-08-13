@@ -18,7 +18,8 @@ public:
     std::vector<cv::Point> get_outmost_polygon_boundary(const cv::Mat &img);
     double get_mean_statistisc(const cv::Mat &gray, const cv::Mat &mask_bool);
     double mean_luminance_ratio(const cv::Mat &grayA, const cv::Mat &grayB, const cv::Mat &mask_bool);
-    void make_luminace_balance(cv::Mat &image);
+    void make_luminace_balance_yuv(cv::Mat &image);
+    void make_luminace_balance_hsv(cv::Mat &image);
     
 private:
     double tune(double x);
