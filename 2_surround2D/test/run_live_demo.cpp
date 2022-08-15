@@ -118,7 +118,6 @@ int main(int argc, char *argv[])
         stop = (!video_front.read(frame_front)) || (!video_back.read(frame_back)) || (!video_front.read(frame_left)) || (!video_right.read(frame_right));
     }
     
-    
     video_front.release();
     video_back.release();
     video_left.release();
