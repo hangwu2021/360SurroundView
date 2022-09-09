@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/myStitch/common_include.hpp
+iostream
+-
+string
+-
+memory
+-
+opencv2/highgui/highgui.hpp
+-
+opencv2/imgproc/imgproc.hpp
+-
+opencv2/imgcodecs/imgcodecs.hpp
+-
+opencv2/features2d/features2d.hpp
+-
+opencv2/xfeatures2d/nonfree.hpp
+-
+opencv2/calib3d/calib3d.hpp
+-
+
+../include/myStitch/seam_carving.hpp
+myStitch/common_include.hpp
+../include/myStitch/myStitch/common_include.hpp
+opencv2/stitching/detail/seam_finders.hpp
+-
+
+/home/hangwu/projects/360SurroundView/5_myStitch/src/seam_carving.cpp
+myStitch/seam_carving.hpp
+/home/hangwu/projects/360SurroundView/5_myStitch/src/myStitch/seam_carving.hpp
+
