@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/hangwu/projects/360SurroundView/4_featuresMatch/test/test_ORB.cpp
+iostream
+-
+opencv2/opencv.hpp
+/home/hangwu/projects/360SurroundView/4_featuresMatch/test/opencv2/opencv.hpp
+
