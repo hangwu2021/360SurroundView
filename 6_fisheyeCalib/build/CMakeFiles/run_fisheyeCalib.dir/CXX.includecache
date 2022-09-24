@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/hangwu/projects/360SurroundView/6_fisheyeCalib/test/fisheyeCalib.cpp
+opencv2/opencv.hpp
+-
+iostream
+-
+vector
+-
+
